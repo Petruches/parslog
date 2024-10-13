@@ -1,0 +1,11 @@
+[Unit]
+Description=telegram bot
+
+[Service]
+User=petr
+ExecStart=/usr/bin/python3 /home/petr/Desktop/python/project1/tgbot/bot.py
+StandardOutput=append:/var/log/bot/bot.log
+StandardError=append:/var/log/bot/error.log
+
+[Install]
+WantedBy=multi-user.target
