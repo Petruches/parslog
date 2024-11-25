@@ -1,6 +1,6 @@
 #!/usr/bin/python3.11
 TEXT_SESSION: str = "ERROR"
-file = open("/log.log", 'r')
+file = open("./log.log", 'r')
 
 def start():
     print("start")
