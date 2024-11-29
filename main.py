@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 TEXT_SESSION: str = "ERROR"
-file = open("./log.log", 'r')
+FILE = open("./log.log", 'r')
 
 
 def send_telegram(text: str):
@@ -18,12 +18,14 @@ def send_telegram(text: str):
     if r.status_code != 200:
         raise Exception("post_text error")
 
-send_telegram("asdasdasdasd")
+#send_telegram("asdasdasdasd")
 
 def start():
     try:
+        import os
+        os.path.isfile("./log.log")
         while True:
-            chunk = file.readline()
+            chunk = FILE.readline()
             if not chunk:
                 continue
             elif TEXT_SESSION in chunk:
@@ -33,4 +35,4 @@ def start():
         print(e)
 
 
-# start()
+start()
