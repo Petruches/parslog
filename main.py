@@ -21,12 +21,16 @@ def send_telegram(text: str):
 send_telegram("asdasdasdasd")
 
 def start():
-    print("start")
-    while True:
-        chunk = file.readline()
-        if not chunk:
-            continue
-        elif TEXT_SESSION in chunk:
-            print(chunk)
+    try:
+        while True:
+            chunk = file.readline()
+            if not chunk:
+                continue
+            elif TEXT_SESSION in chunk:
+                send_telegram(chunk)
+                print(chunk)
+    except Exception as e:
+        print(e)
+
 
 # start()
