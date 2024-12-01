@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import time
 
 TEXT_SESSION: str = "ERROR"
 FILE = open("./log.log", 'r')
@@ -16,13 +17,11 @@ def send_telegram(text: str):
             "chat_id": channel_id,
             "text": text
         })
-        #if r.status_code != 200:
-        #    raise Exception("post_text error")
+        if r.status_code != 200:
+            raise print(Exception)
     except Exception as e:
         print(e)
 
-
-#send_telegram("asdasdasdasd")
 
 def start():
     try:
@@ -39,4 +38,22 @@ def start():
         print(e)
 
 
-start()
+#start()
+
+def start1() -> None:
+    try:
+        import os
+        os.path.isfile("./log.log")
+        while True:
+            chunk = FILE.read(500000000)
+            lst: list[str] = chunk.split("\n")
+            if not chunk:
+                continue
+            for i in range(len(lst)):
+                if TEXT_SESSION in lst[i]:
+                    print(lst[i])
+                time.sleep(1)
+    except Exception as e:
+        print(e)
+
+start1()
