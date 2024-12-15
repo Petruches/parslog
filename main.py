@@ -23,24 +23,7 @@ def send_telegram(text: str):
         print(e)
 
 
-def start():
-    try:
-        import os
-        os.path.isfile("./log.log")
-        while True:
-            chunk = FILE.readline()
-            if not chunk:
-                continue
-            elif TEXT_SESSION in chunk:
-                send_telegram(str(chunk))
-                print(chunk)
-    except Exception as e:
-        print(e)
-
-
-#start()
-
-def start1() -> None:
+def start() -> None:
     try:
         import os
         os.path.isfile("./log.log")
@@ -52,8 +35,8 @@ def start1() -> None:
             for i in range(len(lst)):
                 if TEXT_SESSION in lst[i]:
                     print(lst[i])
-                time.sleep(1)
+            continue
     except Exception as e:
         print(e)
 
-start1()
+start()
