@@ -17,7 +17,7 @@ def send_telegram(text: str):
             "text": text
         })
         if r.status_code != 200:
-            raise print(Exception)
+            raise "status code does not 200"
     except Exception as e:
         print(e)
 
