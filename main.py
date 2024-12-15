@@ -27,12 +27,13 @@ def start() -> None:
         import os
         os.path.isfile("./log.log")
         while True:
-            chunk = FILE.read(500000000)
+            chunk = FILE.read(50000)
             lst: list[str] = chunk.split("\n")
             if not chunk:
                 continue
             for i in range(len(lst)):
                 if TEXT_SESSION in lst[i]:
+                    send_telegram(str(lst[i]))
                     print(lst[i])
             continue
     except Exception as e:
