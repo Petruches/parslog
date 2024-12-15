@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import time
 
 TEXT_SESSION: str = "ERROR"
 FILE = open("./log.log", 'r')
