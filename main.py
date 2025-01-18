@@ -1,28 +1,31 @@
 #!/usr/bin/env python
+import requests
+from sys import argv
 
 TEXT_SESSION: str = "ERROR"
 FILE = open("./log.log", 'r')
 
 
-def send_telegram(text: str):
+def health_check(url: str):
+    r = requests.get(f"{url}/getMe")
+    if r.status_code != 200:
+        raise "status code does not 200"
+
+def send_telegram(text: str, url_tg: str, channel_id_tg: str) -> None:
     try:
-        import requests
-        token = "7939669010:AAEG8-KmNSVoisckbRFYM36Kq2-HkXJZWrU"
-        url = "https://api.telegram.org/bot"
-        channel_id = "-1002356269285"
-        url += token
+        url = url_tg
+        channel_id = channel_id_tg
         method = url + "/sendMessage"
         r = requests.post(method, data={
             "chat_id": channel_id,
             "text": text
         })
-        if r.status_code != 200:
-            raise "status code does not 200"
+        health_check(url)
     except Exception as e:
-        print(e)
+        print("sykaaa: ", e)
 
 
-def start() -> None:
+def start(url: str, channel_id: str) -> None:
     try:
         import os
         os.path.isfile("./log.log")
@@ -33,10 +36,12 @@ def start() -> None:
                 continue
             for i in range(len(lst)):
                 if TEXT_SESSION in lst[i]:
-                    send_telegram(str(lst[i]))
+                    send_telegram(str(lst[i]), url, channel_id)
                     print(lst[i])
             continue
     except Exception as e:
         print(e)
 
-start()
+
+if __name__ == "__main__":
+    start(argv[1], argv[2])
