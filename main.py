@@ -25,24 +25,26 @@ async def send_telegram(text: str, url_tg: str, channel_id_tg: str):
             "text": text
         })
     except Exception as e:
-        print("sykaaa: ", e)
+        print("Error: ", e)
+
+
+async def check_error(lst: list[str], url: str, channel_id: str):
+    for i in range(len(lst)):
+        if TEXT_SESSION in lst[i]:
+            await asyncio.create_task(send_telegram(str(lst[i]), url, channel_id))
+        continue
 
 
 async def start(url: str, channel_id: str):
     try:
         import os
-        os.path.isfile("./log.log")
-        # await asyncio.create_task(health_check(url))
+        #os.path.isfile("./log.log")
         while True:
             chunk = FILE.read(50000)
             lst: list[str] = chunk.split("\n")
             if not chunk:
                 continue
-            for i in range(len(lst)):
-                if TEXT_SESSION in lst[i]:
-                    await asyncio.create_task(health_check(url))
-                    await asyncio.create_task(send_telegram(str(lst[i]), url, channel_id))
-            continue
+            await asyncio.create_task(check_error(lst, url, channel_id))
     except Exception as e:
         print(e)
 
