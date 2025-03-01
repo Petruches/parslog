@@ -2,6 +2,7 @@
 import requests
 from sys import argv
 import asyncio
+from threading import Thread
 
 TEXT_SESSION: str = "ERROR"
 FILE = open("./log.log", 'r')
@@ -15,7 +16,7 @@ async def health_check(url: str):
 
 
 @staticmethod
-async def send_telegram(text: str, url_tg: str, channel_id_tg: str):
+def send_telegram(text: str, url_tg: str, channel_id_tg: str):
     try:
         url = url_tg
         channel_id = channel_id_tg
@@ -28,23 +29,26 @@ async def send_telegram(text: str, url_tg: str, channel_id_tg: str):
         print("Error: ", e)
 
 
-async def check_error(lst: list[str], url: str, channel_id: str):
+@staticmethod
+def check_error(lst: list[str], url: str, channel_id: str):
     for i in range(len(lst)):
         if TEXT_SESSION in lst[i]:
-            await asyncio.create_task(send_telegram(str(lst[i]), url, channel_id))
+            Thread(target=send_telegram, args=(str(lst[i]), url, channel_id,)).start()
         continue
 
 
 async def start(url: str, channel_id: str):
     try:
-        import os
-        #os.path.isfile("./log.log")
+        # import os
+        # os.path.isfile("./log.log")
         while True:
             chunk = FILE.read(50000)
             lst: list[str] = chunk.split("\n")
             if not chunk:
                 continue
-            await asyncio.create_task(check_error(lst, url, channel_id))
+            await asyncio.create_task(health_check(url))
+            Thread(target=check_error, args=(lst, url, channel_id, )).start()
+            await asyncio.sleep(3)
     except Exception as e:
         print(e)
 
