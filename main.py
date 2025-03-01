@@ -17,13 +17,15 @@ async def health_check(url: str):
 
 @staticmethod
 def send_telegram(text: str, url_tg: str, channel_id_tg: str):
+    from datetime import datetime
     try:
+        tm = f"{datetime.now().hour}:{datetime.now().minute}:{datetime.now().second} - "
         url = url_tg
         channel_id = channel_id_tg
         method = url + "/sendMessage"
         r = requests.post(method, data={
             "chat_id": channel_id,
-            "text": text
+            "text": tm + text
         })
     except Exception as e:
         print("Error: ", e)
@@ -48,7 +50,7 @@ async def start(url: str, channel_id: str):
                 continue
             await asyncio.create_task(health_check(url))
             Thread(target=check_error, args=(lst, url, channel_id, )).start()
-            await asyncio.sleep(3)
+            await asyncio.sleep(1)
     except Exception as e:
         print(e)
 
