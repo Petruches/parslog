@@ -43,6 +43,7 @@ async def start(url: str, channel_id: str):
     try:
         # import os
         # os.path.isfile("./log.log")
+        FILE.seek(0, 2)
         while True:
             chunk = FILE.read(50000)
             lst: list[str] = chunk.split("\n")
